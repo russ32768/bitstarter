@@ -57,9 +57,9 @@ var checkHtmlFile = function(htmlfile, checksfile) {
     return out;
 };
 
-var checkHtmlurl = function(htmlfile, checksurl) {
-    $ = cheerioHtmlFile(htmlfile);
-    var checks = checksurl;
+var checkHtmlurl = function(htmlurl, checksfile) {
+    $ = cheerio.load(htmlurl);
+    var checks = loadChecks(checksfile).sort();
     var out = {};
     for(var ii in checks) {
         var present = $(checks[ii]).length > 0;
@@ -88,7 +88,7 @@ if(require.main == module) {
    } else {
       var checkdata=rest.get(program.url).on('complete', function(data) {
       //sys.puts(data);
-      var checkJson = checkHtmlurl(program.file, JSON.parse(data));                                                                   
+      var checkJson = checkHtmlurl(data, program.checks);                                                                   
       var outJson = JSON.stringify(checkJson, null, 4);                                                                               
       console.log(outJson);                                                                                                           
 
